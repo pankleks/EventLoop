@@ -1,6 +1,15 @@
 #include <Arduino.h>
 
+#if defined(__AVR_ATtiny85__) || defined(__AVR_ATtiny13__)
+#define TINY
+#endif
+
+#ifdef TINY
+#define LOOP_SLOTS 6
+#else
 #define LOOP_SLOTS 12
+#endif
+
 #define EVENT_LOOP \
     EventLoop elp; \
     void loop() { elp.loop(); }
@@ -104,7 +113,7 @@ class AnalogInput : public Event
 {
     handler_1 *_fn;
     uint8_t _pin;
-    int _lastValue = -1024;
+    int _lastValue = -32768;
     int _threshold;
 
 public:
@@ -164,7 +173,7 @@ class PushButton : public Event
 {
     handler *_fn;
     uint8_t _pin;
-    unsigned long _lastMilis;
+    unsigned long _lastMillis;
     unsigned int _debounce;
 
 public:
@@ -173,15 +182,15 @@ public:
         _fn = fn;
         _pin = pin;
         _debounce = debounce;
-        _lastMilis = millis();
+        _lastMillis = millis();
         pinMode(_pin, INPUT_PULLUP);
     }
 
     int loop()
     {
-        if (digitalRead(_pin) == 0 && millis() - _lastMilis > _debounce)
+        if (digitalRead(_pin) == 0 && millis() - _lastMillis > _debounce)
         {
-            _lastMilis = millis();
+            _lastMillis = millis();
             _fn();
         }
 
@@ -255,4 +264,36 @@ public:
         for (int i = 0; i < LOOP_SLOTS; i++)
             _held[i] = false;
     }
+
+#ifndef TINY
+    int always(handler fn, bool paused = false)
+    {
+        return add(new Always(fn), paused);
+    }
+
+    int interval(handler_1 fn, long ms, bool immediate = false, int count = -1, bool paused = false)
+    {
+        return add(new Interval(fn, ms, immediate, count), paused);
+    }
+
+    int timeout(handler fn, long ms, bool paused = false)
+    {
+        return add(new Timeout(fn, ms), paused);
+    }
+
+    int analogInput(handler_1 fn, uint8_t pin, int threshold = 0, bool paused = false)
+    {
+        return add(new AnalogInput(fn, pin, threshold), paused);
+    }
+
+    int stateButton(handler_1 fn, uint8_t pin, bool paused = false)
+    {
+        return add(new StateButton(fn, pin), paused);
+    }
+
+    int pushButton(handler fn, uint8_t pin, unsigned int debounce = 300, bool paused = false)
+    {
+        return add(new PushButton(fn, pin, debounce), paused);
+    }
+#endif
 };

@@ -11,37 +11,37 @@ void setup()
     pinMode(LED_BUILTIN, OUTPUT);
 
     // blink task
-    blinkTaskId = elp.add(new Interval(
+    blinkTaskId = elp.interval(
         [](int count)
         {
             state = !state;
             digitalWrite(LED_BUILTIN, state);
         },
-        500));
+        500);
 
     // pause blink after 5s
-    elp.add(new Timeout(
+    elp.timeout(
         []()
         {
             elp.pause(blinkTaskId); // pauses execution of task
         },
-        5 * 1000));
+        5 * 1000);
 
     // resume blink after 10s
-    elp.add(new Timeout(
+    elp.timeout(
         []()
         {
             elp.resume(blinkTaskId); // resumes execution of task
         },
-        10 * 1000));
+        10 * 1000);
 
     // kills blink after 15s
-    elp.add(new Timeout(
+    elp.timeout(
         []()
         {
             elp.kill(blinkTaskId); // stop and remove task
         },
-        15 * 1000));
+        15 * 1000);
 
     elp.pauseAll();  // pauses all tasks
     elp.resumeAll(); // resumes all tasks

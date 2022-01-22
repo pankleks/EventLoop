@@ -9,12 +9,12 @@ void setup()
     pinMode(LED_BUILTIN, OUTPUT);
 
     // set interval
-    elp.add(new Interval(
+    elp.interval(
         [](int count)
         {
             // blink every 500ms
             state = !state;
             digitalWrite(LED_BUILTIN, state);
         },
-        500));
+        500);
 }

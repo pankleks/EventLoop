@@ -14,3 +14,6 @@ See examples for more.
   - add: start as paused in add method
 - 1/13/2021
   - add: interval max count
+- 1/23/2021
+  - add: shorthand methods
+  - add: attiny detection to minimalize memory usage
