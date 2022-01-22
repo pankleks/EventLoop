@@ -1,8 +1,8 @@
 {
     "name": "EventLoop",
-    "version": "1.0.1",
-    "description": "Exchange loop() with event loop with support for intervals, timeouts, buttons etc.",
-    "keywords": "event loop, interval, timeout, button",
+    "version": "1.0.2",
+    "description": "Exchange loop() with event loop with event based programming.",
+    "keywords": "event,loop,interval,timeout,button,input",
     "repository": {
         "type": "git",
         "url": "https://github.com/pankleks/EventLoop.git"
