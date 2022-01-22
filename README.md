@@ -1,6 +1,6 @@
 # Loop event handler
 
-Exchange your `void loop()` with event loop and swith to event driven programming style.
+Exchange your `void loop()` with event loop and switch to non-blocking event driven programming style.
 
 See examples for more.
 
