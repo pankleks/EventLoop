@@ -1,6 +1,6 @@
 {
     "name": "EventLoop",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "Exchange loop() with event loop with event based programming.",
     "keywords": "event,loop,interval,timeout,button,input",
     "repository": {
