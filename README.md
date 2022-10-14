@@ -17,5 +17,5 @@ See examples for more.
 - 1/23/2022 (1.1.0)
   - add: shorthand methods
   - add: attiny detection to minimalize memory usage
-- 10/14/2022 (1.2.2)
+- 10/14/2022 (1.2.0)
   - add: full lambda (except AVR) #1
