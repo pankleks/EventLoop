@@ -4,6 +4,14 @@
 #define TINY
 #endif
 
+#if defined(__AVR__)
+typedef void (*handler)();
+typedef void (*handler_1)(int);
+#else
+typedef std::function<void()> handler;
+typedef std::function<void(int)> handler_1;
+#endif
+
 #ifdef TINY
 #define LOOP_SLOTS 6
 #else
@@ -13,9 +21,6 @@
 #define EVENT_LOOP \
     EventLoop elp; \
     void loop() { elp.loop(); }
-
-typedef void handler();
-typedef void handler_1(int);
 
 class Event
 {
@@ -31,10 +36,10 @@ public:
 
 class Always : public Event
 {
-    handler *_fn;
+    handler _fn;
 
 public:
-    Always(handler fn)
+    Always(const handler fn)
     {
         _fn = fn;
     }
@@ -50,11 +55,11 @@ public:
 
 class Timeout : public Event
 {
-    handler *_fn;
+    handler _fn;
     unsigned long _t;
 
 public:
-    Timeout(handler fn, long ms)
+    Timeout(const handler fn, long ms)
     {
         _fn = fn;
         _t = millis() + ms;
@@ -76,14 +81,14 @@ public:
 
 class Interval : public Event
 {
-    handler_1 *_fn;
+    handler_1 _fn;
     long _ms;
     unsigned long _t;
     bool _immediate;
     int _count;
 
 public:
-    Interval(handler_1 fn, long ms, bool immediate = false, int count = -1)
+    Interval(const handler_1 fn, long ms, bool immediate = false, int count = -1)
     {
         _fn = fn;
         _ms = ms;
@@ -111,13 +116,13 @@ public:
 
 class AnalogInput : public Event
 {
-    handler_1 *_fn;
+    handler_1 _fn;
     uint8_t _pin;
     int _lastValue = -32768;
     int _threshold;
 
 public:
-    AnalogInput(handler_1 fn, uint8_t pin, int threshold = 0)
+    AnalogInput(const handler_1 fn, uint8_t pin, int threshold = 0)
     {
         _fn = fn;
         _pin = pin;
@@ -142,12 +147,12 @@ public:
 
 class StateButton : public Event
 {
-    handler_1 *_fn;
+    handler_1 _fn;
     uint8_t _pin;
     int _lastState = 1;
 
 public:
-    StateButton(handler_1 fn, uint8_t pin)
+    StateButton(const handler_1 fn, uint8_t pin)
     {
         _fn = fn;
         _pin = pin;
@@ -171,13 +176,13 @@ public:
 
 class PushButton : public Event
 {
-    handler *_fn;
+    handler _fn;
     uint8_t _pin;
     unsigned long _lastMillis;
     unsigned int _debounce;
 
 public:
-    PushButton(handler fn, uint8_t pin, unsigned int debounce = 300)
+    PushButton(const handler fn, uint8_t pin, unsigned int debounce = 300)
     {
         _fn = fn;
         _pin = pin;
@@ -266,32 +271,32 @@ public:
     }
 
 #ifndef TINY
-    int always(handler fn, bool paused = false)
+    int always(const handler fn, bool paused = false)
     {
         return add(new Always(fn), paused);
     }
 
-    int interval(handler_1 fn, long ms, bool immediate = false, int count = -1, bool paused = false)
+    int interval(const handler_1 fn, long ms, bool immediate = false, int count = -1, bool paused = false)
     {
         return add(new Interval(fn, ms, immediate, count), paused);
     }
 
-    int timeout(handler fn, long ms, bool paused = false)
+    int timeout(const handler fn, long ms, bool paused = false)
     {
         return add(new Timeout(fn, ms), paused);
     }
 
-    int analogInput(handler_1 fn, uint8_t pin, int threshold = 0, bool paused = false)
+    int analogInput(const handler_1 fn, uint8_t pin, int threshold = 0, bool paused = false)
     {
         return add(new AnalogInput(fn, pin, threshold), paused);
     }
 
-    int stateButton(handler_1 fn, uint8_t pin, bool paused = false)
+    int stateButton(const handler_1 fn, uint8_t pin, bool paused = false)
     {
         return add(new StateButton(fn, pin), paused);
     }
 
-    int pushButton(handler fn, uint8_t pin, unsigned int debounce = 300, bool paused = false)
+    int pushButton(const handler fn, uint8_t pin, unsigned int debounce = 300, bool paused = false)
     {
         return add(new PushButton(fn, pin, debounce), paused);
     }
