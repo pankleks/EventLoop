@@ -85,15 +85,18 @@ class Interval : public Event
     long _ms;
     unsigned long _t;
     bool _immediate;
+    int _initCount;
     int _count;
+    bool _resetCount;
 
 public:
-    Interval(const handler_1 fn, long ms, bool immediate = false, int count = -1)
+    Interval(const handler_1 fn, long ms, bool immediate = false, int count = -1, bool resetCount = false)
     {
         _fn = fn;
         _ms = ms;
         _immediate = immediate;
-        _count = count;
+        _initCount = _count = count;
+        _resetCount = resetCount;
         _t = millis() + _ms;
     }
 
@@ -106,6 +109,9 @@ public:
                 --_count;
             _t = millis() + _ms;
             _fn(_count);
+
+            if (_count == 0 && _resetCount)
+                _count = _initCount;
         }
 
         return 0;
@@ -276,9 +282,9 @@ public:
         return add(new Always(fn), paused);
     }
 
-    int interval(const handler_1 fn, long ms, bool immediate = false, int count = -1, bool paused = false)
+    int interval(const handler_1 fn, long ms, bool immediate = false, int count = -1, bool resetCount = false, bool paused = false)
     {
-        return add(new Interval(fn, ms, immediate, count), paused);
+        return add(new Interval(fn, ms, immediate, count, resetCount), paused);
     }
 
     int timeout(const handler fn, long ms, bool paused = false)

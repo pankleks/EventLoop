@@ -19,3 +19,5 @@ See examples for more.
   - add: attiny detection to minimalize memory usage
 - 10/14/2022 (1.2.0)
   - add: full lambda (except AVR) #1
+- 12/12/2022 (1.3.0)
+  - add: reset count flag added to interval
