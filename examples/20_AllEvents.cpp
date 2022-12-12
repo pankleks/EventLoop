@@ -33,6 +33,13 @@ void setup()
         },
         1000, false /* if true, first execution will be immediate */, 10 /* 10 times only */);
 
+    elp.interval(
+        [](int count)
+        {
+            // executed 10 times, every 1000ms, then resets counter to 10 and continue            
+        },
+        1000, false, 10 /* 10 times */, true /* reset counter */);        
+
     elp.analogInput(
         [](int value /* new value */)
         {
