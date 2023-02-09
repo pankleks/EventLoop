@@ -4,6 +4,10 @@ Exchange your `void loop()` with event loop and switch to non-blocking event dri
 
 See examples for more.
 
+## Tested on
+
+AVR/AVR TINY/STM32/ESP32/RPI PICO
+
 ## History
 - 4/18/2021
   - add: pause and resume
@@ -21,3 +25,5 @@ See examples for more.
   - add: full lambda (except AVR) #1
 - 12/12/2022 (1.3.0)
   - add: reset count flag added to interval
+- 2/9/2023
+  - fix: kill, pause, resume crash when negative ids were passed

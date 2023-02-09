@@ -18,9 +18,12 @@ typedef std::function<void(int)> handler_1;
 #define LOOP_SLOTS 12
 #endif
 
-#define EVENT_LOOP \
-    EventLoop elp; \
-    void loop() { elp.loop(); }
+#define EVENT_LOOP  \
+    EventLoop elp;  \
+    void loop()     \
+    {               \
+        elp.loop(); \
+    }
 
 class Event
 {
@@ -244,9 +247,12 @@ public:
         return -1;
     }
 
+    /**
+     * @brief stop and deletes event with id
+     */
     void kill(int id)
     {
-        if (_events[id] != NULL)
+        if (id >= 0 && _events[id] != NULL)
         {
             delete _events[id];
             _events[id] = NULL;
@@ -254,22 +260,36 @@ public:
         }
     }
 
+    /**
+     * @brief pauses event with id
+     */
     void pause(int id)
     {
-        _held[id] = true;
+        if (id >= 0)
+            _held[id] = true;
     }
 
+    /**
+     * @brief resumes event with id
+     */
     void resume(int id)
     {
-        _held[id] = false;
+        if (id >= 0)
+            _held[id] = false;
     }
 
+    /**
+     * @brief pauses all events
+     */
     void pauseAll()
     {
         for (int i = 0; i < LOOP_SLOTS; i++)
             _held[i] = true;
     }
 
+    /**
+     * @brief resumes all events
+     */
     void resumeAll()
     {
         for (int i = 0; i < LOOP_SLOTS; i++)
