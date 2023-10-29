@@ -25,7 +25,7 @@ AVR/AVR TINY/STM32/ESP32/RPI PICO
   - add: full lambda (except AVR) #1
 - 12/12/2022 (1.3.0)
   - add: reset count flag added to interval
-- 2/9/2023
+- 2/9/2023 (1.3.1)
   - fix: kill, pause, resume crash when negative ids were passed
-- 10/29/2023
+- 10/29/2023 (1.3.2)
   - add: RPI PICO -> add EVENT_LOOP1 for processing on 2nd core
