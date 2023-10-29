@@ -4,7 +4,7 @@
 #define TINY
 #endif
 
-#if defined(__AVR__)
+#if defined(__AVR__) || defined(ARDUINO_ARCH_RP2040)
 typedef void (*handler)();
 typedef void (*handler_1)(int);
 #else
@@ -24,6 +24,16 @@ typedef std::function<void(int)> handler_1;
     {               \
         elp.loop(); \
     }
+
+#ifdef ARDUINO_ARCH_RP2040
+// event loop on 2nd core
+#define EVENT_LOOP1  \
+    EventLoop elp1;  \
+    void loop1()     \
+    {                \
+        elp1.loop(); \
+    }
+#endif
 
 class Event
 {

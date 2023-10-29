@@ -27,3 +27,5 @@ AVR/AVR TINY/STM32/ESP32/RPI PICO
   - add: reset count flag added to interval
 - 2/9/2023
   - fix: kill, pause, resume crash when negative ids were passed
+- 10/29/2023
+  - add: RPI PICO -> add EVENT_LOOP1 for processing on 2nd core
